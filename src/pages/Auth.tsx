@@ -92,113 +92,117 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 gradient-primary relative overflow-hidden">
-      {/* Decorative elements */}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
+      {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 -right-48 w-96 h-96 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-48 -left-48 w-96 h-96 bg-gradient-to-tr from-accent/20 to-primary/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/5 via-transparent to-accent/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
       </div>
       
-      <Card className="w-full max-w-md shadow-elevated backdrop-blur-sm bg-card/95 animate-scale-in relative z-10">
-        <CardHeader className="text-center space-y-3 pb-6">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-accent flex items-center justify-center mb-2 shadow-glow">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <Card className="w-full max-w-md shadow-2xl backdrop-blur-xl bg-card/98 border-border/50 animate-scale-in relative z-10 overflow-hidden">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
+        
+        <CardHeader className="text-center space-y-4 pb-8 pt-10 relative">
+          <div className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-3 shadow-lg shadow-primary/25 animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <CardTitle className="text-3xl font-bold bg-gradient-accent bg-clip-text text-transparent">PersonalHub</CardTitle>
-          <CardDescription className="text-base">Manage your life, all in one place</CardDescription>
+          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PersonalHub</CardTitle>
+          <CardDescription className="text-base text-muted-foreground">Organize your life, elevate your productivity</CardDescription>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 pb-8 px-8 relative">
           <Tabs defaultValue="signin" onValueChange={(v) => setIsSignUp(v === 'signup')}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="signin" className="data-[state=active]:bg-gradient-accent data-[state=active]:text-white">Sign In</TabsTrigger>
-              <TabsTrigger value="signup" className="data-[state=active]:bg-gradient-accent data-[state=active]:text-white">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-8 p-1 bg-muted/50 h-12">
+              <TabsTrigger value="signin" className="rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
+              <TabsTrigger value="signup" className="rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin" className="mt-0">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email" className="text-sm font-medium">Email</Label>
+                  <Label htmlFor="signin-email" className="text-sm font-semibold">Email Address</Label>
                   <Input
                     id="signin-email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password" className="text-sm font-medium">Password</Label>
+                  <Label htmlFor="signin-password" className="text-sm font-semibold">Password</Label>
                   <Input
                     id="signin-password"
                     type="password"
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full h-11 bg-gradient-accent hover:opacity-90 transition-opacity" disabled={loading}>
+                <Button type="submit" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30" disabled={loading}>
                   {loading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
             </TabsContent>
             
             <TabsContent value="signup" className="mt-0">
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-name" className="text-sm font-medium">Full Name</Label>
+                  <Label htmlFor="signup-name" className="text-sm font-semibold">Full Name</Label>
                   <Input
                     id="signup-name"
                     type="text"
                     placeholder="John Doe"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
+                  <Label htmlFor="signup-email" className="text-sm font-semibold">Email Address</Label>
                   <Input
                     id="signup-email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
+                  <Label htmlFor="signup-password" className="text-sm font-semibold">Password</Label>
                   <Input
                     id="signup-password"
                     type="password"
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-confirm" className="text-sm font-medium">Confirm Password</Label>
+                  <Label htmlFor="signup-confirm" className="text-sm font-semibold">Confirm Password</Label>
                   <Input
                     id="signup-confirm"
                     type="password"
                     placeholder="••••••••"
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    className="h-11"
+                    className="h-12 border-border/60 focus:border-primary transition-colors"
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full h-11 bg-gradient-accent hover:opacity-90 transition-opacity" disabled={loading}>
+                <Button type="submit" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30" disabled={loading}>
                   {loading ? 'Creating account...' : 'Sign Up'}
                 </Button>
               </form>
