@@ -185,10 +185,10 @@ export default function Todos() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'text-red-500';
-      case 'medium': return 'text-yellow-500';
-      case 'low': return 'text-green-500';
-      default: return 'text-muted-foreground';
+      case 'high': return 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20';
+      case 'medium': return 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20';
+      case 'low': return 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20';
+      default: return 'bg-muted text-muted-foreground border-border';
     }
   };
 
@@ -261,50 +261,58 @@ export default function Todos() {
         </Dialog>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {todos.map((todo) => (
-          <Card key={todo.id} className={`shadow-card hover:shadow-elevated transition-shadow ${todo.completed ? 'opacity-60' : ''}`}>
-            <CardContent className="pt-6">
+          <Card key={todo.id} className={`shadow-card hover:shadow-elevated transition-all border-l-4 ${
+            todo.priority === 'high' ? 'border-l-red-500' : 
+            todo.priority === 'medium' ? 'border-l-yellow-500' : 
+            'border-l-green-500'
+          } ${todo.completed ? 'opacity-60 bg-muted/50' : ''}`}>
+            <CardContent className="pt-5 pb-5">
               <div className="flex items-start gap-4">
                 <Checkbox
                   checked={todo.completed}
                   onCheckedChange={() => handleToggleComplete(todo)}
-                  className="mt-1"
+                  className="mt-1.5 h-5 w-5"
                 />
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold ${todo.completed ? 'line-through' : ''}`}>
-                    {todo.title}
-                  </h3>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h3 className={`text-lg font-semibold ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>
+                      {todo.title}
+                    </h3>
+                    <div className="flex gap-1 flex-shrink-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => openEditDialog(todo)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                        onClick={() => handleDelete(todo.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                   {todo.description && (
-                    <p className="text-sm text-muted-foreground mt-1">{todo.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{todo.description}</p>
                   )}
-                  <div className="flex gap-4 mt-2 text-sm">
+                  <div className="flex flex-wrap gap-2 items-center">
                     {todo.due_date && (
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>{format(new Date(todo.due_date), 'MMM dd, yyyy HH:mm')}</span>
+                      <div className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-md bg-muted border border-border">
+                        <Calendar className="h-3.5 w-3.5 text-primary" />
+                        <span className="font-medium">{format(new Date(todo.due_date), 'MMM dd, yyyy • HH:mm')}</span>
                       </div>
                     )}
-                    <span className={`capitalize font-medium ${getPriorityColor(todo.priority)}`}>
-                      {todo.priority} priority
+                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-md border capitalize ${getPriorityColor(todo.priority)}`}>
+                      {todo.priority}
                     </span>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => openEditDialog(todo)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(todo.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </div>
               </div>
             </CardContent>

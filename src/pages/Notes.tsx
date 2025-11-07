@@ -165,61 +165,84 @@ export default function Notes() {
               New Note
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>{editingNote ? 'Edit Note' : 'Create New Note'}</DialogTitle>
+          <DialogContent className="max-w-3xl max-h-[90vh] p-0 gap-0">
+            <DialogHeader className="px-6 pt-6 pb-4 border-b">
+              <DialogTitle className="text-2xl">{editingNote ? 'Edit Note' : 'New Note'}</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+            <form onSubmit={handleSubmit} className="flex flex-col h-full">
+              <div className="flex-1 overflow-y-auto px-6 py-4 space-y-1">
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="Note title..."
+                  className="text-3xl font-bold border-0 px-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40"
                   required
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="content">Content</Label>
+                {formData.image_url && (
+                  <div className="relative group my-4">
+                    <img
+                      src={formData.image_url}
+                      alt="Note attachment"
+                      className="w-full rounded-lg border shadow-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => setFormData({ ...formData, image_url: null })}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Remove Image
+                    </Button>
+                  </div>
+                )}
                 <Textarea
                   id="content"
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  rows={6}
+                  placeholder="Start writing..."
+                  className="min-h-[300px] border-0 px-0 text-base leading-relaxed resize-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="image">Image (optional)</Label>
+              <div className="px-6 py-4 border-t bg-muted/30 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <Input
-                    id="image"
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById('image-upload')?.click()}
+                    disabled={uploading}
+                    className="gap-2"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                    {uploading ? 'Uploading...' : formData.image_url ? 'Change Image' : 'Add Image'}
+                  </Button>
+                  <input
+                    id="image-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    disabled={uploading}
+                    className="hidden"
                   />
-                  {formData.image_url && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setFormData({ ...formData, image_url: null })}
-                    >
-                      Remove
-                    </Button>
-                  )}
                 </div>
-                {formData.image_url && (
-                  <img
-                    src={formData.image_url}
-                    alt="Preview"
-                    className="mt-2 rounded-lg max-h-40 object-cover"
-                  />
-                )}
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => {
+                      setOpen(false);
+                      resetForm();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={uploading} className="min-w-[100px]">
+                    {editingNote ? 'Update' : 'Create'}
+                  </Button>
+                </div>
               </div>
-              <Button type="submit" className="w-full" disabled={uploading}>
-                {editingNote ? 'Update Note' : 'Create Note'}
-              </Button>
             </form>
           </DialogContent>
         </Dialog>
