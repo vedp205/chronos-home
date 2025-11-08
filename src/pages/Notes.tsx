@@ -201,23 +201,7 @@ export default function Notes() {
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="flex flex-col h-full">
-              <div 
-                className={`flex-1 overflow-y-auto px-8 py-6 space-y-4 transition-colors ${
-                  isDragging ? 'bg-primary/5 border-2 border-dashed border-primary' : ''
-                }`}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-              >
-                {isDragging && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10 pointer-events-none">
-                    <div className="text-center">
-                      <Upload className="h-12 w-12 mx-auto mb-4 text-primary animate-bounce" />
-                      <p className="text-lg font-semibold text-primary">Drop image here</p>
-                    </div>
-                  </div>
-                )}
-                
+              <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4">
                 <Input
                   id="title"
                   value={formData.title}
@@ -227,34 +211,52 @@ export default function Notes() {
                   required
                 />
                 
-                {formData.image_url && (
-                  <div className="relative group my-6 rounded-xl overflow-hidden border-2 border-border/50 shadow-md">
-                    <img
-                      src={formData.image_url}
-                      alt="Note attachment"
-                      className="w-full"
-                    />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-2"
-                      onClick={() => setFormData({ ...formData, image_url: null })}
-                    >
-                      <X className="h-4 w-4" />
-                      Remove
-                    </Button>
-                  </div>
-                )}
-                
-                <Textarea
-                  ref={textareaRef}
-                  id="content"
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="Start writing... or drag and drop an image"
-                  className="min-h-[400px] border-0 px-0 text-lg leading-relaxed resize-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40"
-                />
+                <div 
+                  className={`relative transition-colors rounded-lg ${
+                    isDragging ? 'bg-primary/5 border-2 border-dashed border-primary p-4' : ''
+                  }`}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                >
+                  {isDragging && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-background/90 backdrop-blur-sm z-10 pointer-events-none rounded-lg">
+                      <div className="text-center">
+                        <Upload className="h-12 w-12 mx-auto mb-4 text-primary animate-bounce" />
+                        <p className="text-lg font-semibold text-primary">Drop image here</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {formData.image_url && (
+                    <div className="relative group my-4 rounded-xl overflow-hidden border-2 border-border/50 shadow-md">
+                      <img
+                        src={formData.image_url}
+                        alt="Note attachment"
+                        className="w-full max-h-96 object-contain bg-muted/20"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-2"
+                        onClick={() => setFormData({ ...formData, image_url: null })}
+                      >
+                        <X className="h-4 w-4" />
+                        Remove
+                      </Button>
+                    </div>
+                  )}
+                  
+                  <Textarea
+                    ref={textareaRef}
+                    id="content"
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    placeholder="Start writing... or drag and drop an image anywhere"
+                    className="min-h-[400px] border-0 px-0 text-lg leading-relaxed resize-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40"
+                  />
+                </div>
               </div>
               
               <div className="px-8 py-5 border-t bg-muted/20 flex items-center justify-between gap-3">
